@@ -216,13 +216,13 @@ har message, har call ke through
 
 <!-- Background Music -->
 <audio id="bg-music" loop>
-  <source src="images/twisterium.mp3" type="audio/mpeg">
+  <source src="images/Tum_Se_.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 (function(){
   var app=document.getElementById('bapp');
-  var popCount=0,totalBalloons=5,openedImages=[];
+  var popCount=0,totalBalloons=7,openedImages=[];
   var musicPlaying=false;
   var bgAudio=document.getElementById('bg-music');
   bgAudio.volume=0.5;
@@ -337,13 +337,13 @@ var fpE = ['💗','💖','💕','❤️','💘','💝','💞','💓','✨','🌸
 
   /* BALLOON DATA */
   var bdata=[
-    {c:'#f472b6',tc:'#be185d',img:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=400&q=80',line:'The very first time I saw you \uD83D\uDC97',cap:'That moment is still safe in my heart like a beautiful dream'},
-    {c:'#ec4899',tc:'#9d174d',img:'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&q=80',line:'Your smile is my favorite world \uD83D\uDC9C',cap:'Whenever you smile, everything around me feels brighter'},
-    {c:'#f9a8d4',tc:'#db2777',img:'https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?w=400&q=80',line:'A beautiful journey together \u2764\uFE0F',cap:'Every path feels easier when I walk with you'},
-    {c:'#fbcfe8',tc:'#be185d',img:'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80',line:'I love you from the heart \uD83E\uDDE1',cap:'This feeling will never fade, no matter what'},
-    {c:'#db2777',tc:'#831843',img:'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80',line:'I want to be yours forever \uD83D\uDC9D',cap:'Only you, today, tomorrow, and always'},
-      {c:'#f472b6',tc:'#9d174d',img:'https://images.unsplash.com/photo-xxxxx?w=400&q=80',line:'Tumhare saath har lamha khaas \uD83D\uDC9E',cap:'Apni baat yahan likho'},
-  {c:'#ec4899',tc:'#be185d',img:'https://images.unsplash.com/photo-yyyyy?w=400&q=80',line:'Tum meri sabse pyari dua ho \uD83D\uDC97',cap:'Apni baat yahan likho'}
+    {c:'#f472b6',tc:'#be185d',img:'images/firstt.jpeg',line:'The very first time I saw you \uD83D\uDC97',cap: 'Wahi pal tha jab tum mujhe pasand aa gaye… bina kisi wajah ke, bas dil ne keh diya "this is special" ❤️✨'},
+    {c:'#ec4899',tc:'#9d174d',img:'images/second.jpeg',line:'The first time we met 💖 \uD83D\uDC9C',cap:'Jab hum pehli baar mile the… tab shayad hume pata nahi tha, par wahi se ek khoobsurat story shuru ho gayi 💕'},
+    {c:'#f9a8d4',tc:'#db2777',img:'images/third.jpeg',line:'Our first trip together ❤️ \u2764\uFE0F',cap:'Woh pehla safar sirf ek trip nahi tha… balki ek promise tha, ki ab har safar hum saath tay karenge ❤️✨'},
+    {c:'#fbcfe8',tc:'#be185d',img:'images/four.jpeg',line:'Just you… my favorite view \uD83E\uDDE1',cap:'Every path feels easier when I walk with you'},
+    {c:'#db2777',tc:'#831843',img:'images/five.jpeg',line:'Forever feels right with you 💕 \uD83D\uDC9D',cap:'Only you, today, tomorrow, and always'},
+      {c:'#f472b6',tc:'#9d174d',img:'images/six.jpeg',line:'Tujhme rab dikhta hai… yaara main kya karu ❤️ \uD83D\uDC9E',cap:'Tum ho to sab achha hai'},
+  {c:'#ec4899',tc:'#be185d',img:'images/seven.jpeg',line:'Pehla nasha, pehla khumar  \uD83D\uDC97',cap:'Just Looking Like A WOW'}
   ];
   function getBPos(){
   var W=app.offsetWidth||360;
@@ -359,19 +359,6 @@ var fpE = ['💗','💖','💕','❤️','💘','💝','💞','💓','✨','🌸
   ];
 }
 
-  // function getBPos(){
-  //   var W=app.offsetWidth||360;
-  //   function sz(base){return Math.max(52,Math.min(base,W*.19));}
-  //   return[
-  //     {l:5, t:22, sz:sz(72),sw:'3.1s',sd:'0s', ra:'-5deg',rb:'4deg', sh:60},
-  //     {l:56,t:10, sz:sz(80),sw:'2.5s',sd:'.5s',ra:'-3deg',rb:'5deg', sh:68},
-  //     {l:26,t:150,sz:sz(68),sw:'3.4s',sd:'1s', ra:'-6deg',rb:'3deg', sh:56},
-  //     {l:64,t:170,sz:sz(74),sw:'2.9s',sd:'1.5s',ra:'-4deg',rb:'6deg',sh:62},
-  //     {l:8, t:272,sz:sz(64),sw:'3.6s',sd:'.8s',ra:'-5deg',rb:'4deg', sh:54}
-  //   ];
-  // }
-
-  // var popped2=[false,false,false,false,false];
 var popped2=[false,false,false,false,false,false,false];
   function buildBalloons(){
     var area=document.getElementById('balloon-area');area.innerHTML='';
@@ -396,7 +383,6 @@ var popped2=[false,false,false,false,false,false,false];
       area.appendChild(wrap);
     });
   }
-
   function spawnConfetti(cx,cy,clr){
     var cc=['#f9a8d4','#fbcfe8','#fce7f3','#ffffff','#ec4899',clr];
     for(var c=0;c<22;c++){
@@ -406,7 +392,6 @@ var popped2=[false,false,false,false,false,false,false];
       setTimeout(function(x){if(x.parentNode)x.parentNode.removeChild(x);},2600,p);
     }
   }
-
   function popBalloon(i,el){
     if(popped2[i])return;popped2[i]=true;
     var rect=el.getBoundingClientRect(),ar=app.getBoundingClientRect();
@@ -419,7 +404,6 @@ var popped2=[false,false,false,false,false,false,false];
     openedImages.push(i);
     setTimeout(function(){openImg(i);},320);
   }
-
   function openImg(i){
     var d=bdata[i];
     var imgEl=document.getElementById('im-img');
