@@ -82,7 +82,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#fff0f5;}
 .s3-hint{font-size:clamp(9px,2.2vw,11px);color:#ec4899;letter-spacing:.12em;text-transform:uppercase;align-self:flex-start;margin-bottom:4px;}
 .pop-counter{font-size:clamp(10px,2.4vw,12px);color:#be185d;align-self:flex-start;margin-bottom:10px;}
 #pop-count{color:#ec4899;font-weight:600;}
-#balloon-area{width:100%;position:relative;min-height:320px;flex:1;}
+#balloon-area{width:100%;position:relative;min-height:380px;flex:1;}
 
 .bl{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;animation:blsway var(--sw,2.8s) ease-in-out infinite var(--sd,0s);}
 @keyframes blsway{0%,100%{transform:rotate(var(--ra,-4deg)) translateY(0);}50%{transform:rotate(var(--rb,4deg)) translateY(-10px);}}
@@ -164,7 +164,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#fff0f5;}
   <div class="sc hide" id="s3">
     <div class="badge" style="text-align:center; display:block;" >💝 Our Memories 💝</div>
     <div class="s3-hint" style="text-align:center; display:block;">Each balloon hides a smile we shared Tap The Balooon 😊🎈</div>
-    <div class="pop-counter" style="text-align:center; display:block;"><span id="pop-count">0</span> / 5 sweet memories 💖</div>
+    <div class="pop-counter" style="text-align:center; display:block;"><span id="pop-count">0</span> / 7 sweet memories 💖</div>
     <div id="balloon-area"></div>
   </div>
 
@@ -223,7 +223,9 @@ har message, har call ke through
 (function(){
   var app=document.getElementById('bapp');
   var popCount=0,totalBalloons=5,openedImages=[];
-  var musicPlaying=false,actx=null,musicTimeoutRef=null,musicStarted=false;
+  var musicPlaying=false;
+  var bgAudio=document.getElementById('bg-music');
+  bgAudio.volume=0.5;
   var mi=0;
 
   /* STAR CANVAS */
@@ -246,52 +248,21 @@ har message, har call ke through
   }
   drawStars();
 
-  /* MUSIC */
-//   var AudioCtx=window.AudioContext||window.webkitAudioContext;
-//   var N={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,Bb4:466.16,C5:523.25};
-//   var melody=[
-//     [N.C4,.28],[N.C4,.28],[N.D4,.56],[N.C4,.56],[N.F4,.56],[N.E4,1.1],
-//     [N.C4,.28],[N.C4,.28],[N.D4,.56],[N.C4,.56],[N.G4,.56],[N.F4,1.1],
-//     [N.C4,.28],[N.C4,.28],[N.C5,.56],[N.A4,.56],[N.F4,.56],[N.E4,.56],[N.D4,.9],
-//     [N.Bb4,.28],[N.Bb4,.28],[N.A4,.56],[N.F4,.56],[N.G4,.56],[N.F4,1.2]
-//   ];
-  function playNote(f,start,dur,vol){
-    if(!actx)return;
-    var o=actx.createOscillator(),g=actx.createGain();
-    var o2=actx.createOscillator(),g2=actx.createGain();
-    o.connect(g);g.connect(actx.destination);
-    o2.connect(g2);g2.connect(actx.destination);
-    o.type='sine';o.frequency.value=f;
-    o2.type='triangle';o2.frequency.value=f*2;
-    g.gain.setValueAtTime(0,start);g.gain.linearRampToValueAtTime(vol,start+.04);
-    g.gain.linearRampToValueAtTime(vol*.6,start+dur*.5);g.gain.linearRampToValueAtTime(0,start+dur-.03);
-    g2.gain.setValueAtTime(0,start);g2.gain.linearRampToValueAtTime(vol*.07,start+.04);g2.gain.linearRampToValueAtTime(0,start+dur-.03);
-    o.start(start);o.stop(start+dur);o2.start(start);o2.stop(start+dur);
-  }
-  function playTune(){
-    if(!actx||!musicPlaying)return;
-    if(actx.state==='suspended')actx.resume();
-    var t=actx.currentTime+.08;
-    melody.forEach(function(n){playNote(n[0],t,.22,.18);t+=n[1];});
-    var total=melody.reduce(function(s,n){return s+n[1];},0);
-    musicTimeoutRef=setTimeout(playTune,(total+.25)*1000);
-  }
+  /* MUSIC (background audio file only) */
   function startMusic(){
-    if(musicStarted)return;musicStarted=true;
-    if(!AudioCtx)return;
-    try{actx=new AudioCtx();}catch(e){return;}
-    musicPlaying=true;playTune();setEqState(true);
+    musicPlaying=true;
+    bgAudio.play().catch(function(e){console.log('Play blocked:',e);});
+    setEqState(true);
   }
   window.toggleMusic=function(){
-    if(!actx){startMusic();return;}
     if(musicPlaying){
-      musicPlaying=false;clearTimeout(musicTimeoutRef);
-      if(actx.state!=='suspended')actx.suspend();
+      musicPlaying=false;
+      bgAudio.pause();
       setEqState(false);
     }else{
       musicPlaying=true;
-      if(actx.state==='suspended')actx.resume();
-      playTune();setEqState(true);
+      bgAudio.play().catch(function(e){console.log('Play blocked:',e);});
+      setEqState(true);
     }
   };
   function setEqState(on){
@@ -370,26 +341,41 @@ var fpE = ['💗','💖','💕','❤️','💘','💝','💞','💓','✨','🌸
     {c:'#ec4899',tc:'#9d174d',img:'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&q=80',line:'Your smile is my favorite world \uD83D\uDC9C',cap:'Whenever you smile, everything around me feels brighter'},
     {c:'#f9a8d4',tc:'#db2777',img:'https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?w=400&q=80',line:'A beautiful journey together \u2764\uFE0F',cap:'Every path feels easier when I walk with you'},
     {c:'#fbcfe8',tc:'#be185d',img:'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80',line:'I love you from the heart \uD83E\uDDE1',cap:'This feeling will never fade, no matter what'},
-    {c:'#db2777',tc:'#831843',img:'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80',line:'I want to be yours forever \uD83D\uDC9D',cap:'Only you, today, tomorrow, and always'}
+    {c:'#db2777',tc:'#831843',img:'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80',line:'I want to be yours forever \uD83D\uDC9D',cap:'Only you, today, tomorrow, and always'},
+      {c:'#f472b6',tc:'#9d174d',img:'https://images.unsplash.com/photo-xxxxx?w=400&q=80',line:'Tumhare saath har lamha khaas \uD83D\uDC9E',cap:'Apni baat yahan likho'},
+  {c:'#ec4899',tc:'#be185d',img:'https://images.unsplash.com/photo-yyyyy?w=400&q=80',line:'Tum meri sabse pyari dua ho \uD83D\uDC97',cap:'Apni baat yahan likho'}
   ];
-
   function getBPos(){
-    var W=app.offsetWidth||360;
-    function sz(base){return Math.max(52,Math.min(base,W*.19));}
-    return[
-      {l:5, t:22, sz:sz(72),sw:'3.1s',sd:'0s', ra:'-5deg',rb:'4deg', sh:60},
-      {l:56,t:10, sz:sz(80),sw:'2.5s',sd:'.5s',ra:'-3deg',rb:'5deg', sh:68},
-      {l:26,t:150,sz:sz(68),sw:'3.4s',sd:'1s', ra:'-6deg',rb:'3deg', sh:56},
-      {l:64,t:170,sz:sz(74),sw:'2.9s',sd:'1.5s',ra:'-4deg',rb:'6deg',sh:62},
-      {l:8, t:272,sz:sz(64),sw:'3.6s',sd:'.8s',ra:'-5deg',rb:'4deg', sh:54}
-    ];
-  }
+  var W=app.offsetWidth||360;
+  function sz(base){return Math.max(52,Math.min(base,W*.19));}
+  return[
+    {l:5, t:22, sz:sz(72),sw:'3.1s',sd:'0s', ra:'-5deg',rb:'4deg', sh:60},
+    {l:56,t:10, sz:sz(80),sw:'2.5s',sd:'.5s',ra:'-3deg',rb:'5deg', sh:68},
+    {l:26,t:150,sz:sz(68),sw:'3.4s',sd:'1s', ra:'-6deg',rb:'3deg', sh:56},
+    {l:64,t:170,sz:sz(74),sw:'2.9s',sd:'1.5s',ra:'-4deg',rb:'6deg',sh:62},
+    {l:8, t:272,sz:sz(64),sw:'3.6s',sd:'.8s',ra:'-5deg',rb:'4deg', sh:54},
+    {l:46,t:280,sz:sz(70),sw:'3.0s',sd:'1.2s',ra:'-4deg',rb:'5deg', sh:58},
+    {l:78,t:300,sz:sz(66),sw:'2.7s',sd:'.6s', ra:'-5deg',rb:'4deg', sh:60}
+  ];
+}
 
-  var popped2=[false,false,false,false,false];
+  // function getBPos(){
+  //   var W=app.offsetWidth||360;
+  //   function sz(base){return Math.max(52,Math.min(base,W*.19));}
+  //   return[
+  //     {l:5, t:22, sz:sz(72),sw:'3.1s',sd:'0s', ra:'-5deg',rb:'4deg', sh:60},
+  //     {l:56,t:10, sz:sz(80),sw:'2.5s',sd:'.5s',ra:'-3deg',rb:'5deg', sh:68},
+  //     {l:26,t:150,sz:sz(68),sw:'3.4s',sd:'1s', ra:'-6deg',rb:'3deg', sh:56},
+  //     {l:64,t:170,sz:sz(74),sw:'2.9s',sd:'1.5s',ra:'-4deg',rb:'6deg',sh:62},
+  //     {l:8, t:272,sz:sz(64),sw:'3.6s',sd:'.8s',ra:'-5deg',rb:'4deg', sh:54}
+  //   ];
+  // }
 
+  // var popped2=[false,false,false,false,false];
+var popped2=[false,false,false,false,false,false,false];
   function buildBalloons(){
     var area=document.getElementById('balloon-area');area.innerHTML='';
-    popped2=[false,false,false,false,false];openedImages=[];popCount=0;
+    popped2=[false,false,false,false,false,false,false];openedImages=[];popCount=0;
     document.getElementById('pop-count').textContent='0';
     var bpos=getBPos();
     bdata.forEach(function(d,i){
@@ -470,7 +456,7 @@ var fpE = ['💗','💖','💕','❤️','💘','💝','💞','💓','✨','🌸
     document.getElementById('s2').classList.add('hide');
     document.getElementById('s3').classList.add('hide');
     setTimeout(function(){document.getElementById('s1').classList.remove('hide');},300);
-    if(!musicPlaying&&actx){toggleMusic();}
+    if(!musicPlaying){toggleMusic();}
   };
 
 })();
@@ -504,7 +490,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-</script>
-
 </body>
 </html>
